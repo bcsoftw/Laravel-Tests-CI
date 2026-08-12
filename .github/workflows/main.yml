@@ -37,4 +37,28 @@ jobs:
     - name: Ejecutar migraciones y seeders
       run: php artisan migrate --seed
 
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22.x'
+
+    - name: Install dependencies
+      run: npm ci --prefer-offline --no-audit --progress=false
+
+    - name: Building de la aplicacion
+      run: npm run build
+    - uses: actions/upload-artifact@v4
+      with:
+        name: build
+        path: public/build
+
+    - name: Ejecutar Pruebas (SQLite)
+      env:
+        DB_CONNECTION: sqlite
+        DB_DATABASE: ":memory:"
+      run: php artisan test
+
+
+
+
     
