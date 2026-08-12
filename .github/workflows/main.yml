@@ -1,0 +1,29 @@
+
+name: Laravel CI
+
+on:
+  push:
+    branches: [ 'main']
+  pull_request:
+    branches: [ 'main' ]
+
+jobs:
+  laravel-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Descargar Código
+      uses: actions/checkout@v4
+
+    - name: Configurar PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2' # Cambia a tu versión de PHP
+        extensions: mbstring, xml, ctype, iconv, json, sqlite3, pdo_sqlite
+        coverage: none
+
+    - name: Copiar Archivo de Entorno
+      run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+
+    - name: Instalar Dependencias de Composer
+      run: composer install --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
