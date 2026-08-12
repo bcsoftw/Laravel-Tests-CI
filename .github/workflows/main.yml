@@ -33,3 +33,8 @@ jobs:
 
     - name: Configurar Directorios de Permisos
       run: chmod -R 777 storage bootstrap/cache
+
+    - name: Ejecutar migraciones y seeders
+      run: php artisan migrate --seed
+
+    
