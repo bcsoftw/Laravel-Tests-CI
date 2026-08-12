@@ -5,6 +5,10 @@ use Illuminate\Support\Facades\Route;
 
 // TASK: Bellow add a route bellow to / URL
 
+Route::get('/', function () {
+    return view('home');
+});
+
 Route::post('posts', [\App\Http\Controllers\PostController::class, 'store'])->name('posts.store');
 Route::put('posts/{post}', [\App\Http\Controllers\PostController::class, 'update'])->name('posts.update');
 

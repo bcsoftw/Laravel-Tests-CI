@@ -34,6 +34,12 @@ jobs:
     - name: Configurar Directorios de Permisos
       run: chmod -R 777 storage bootstrap/cache
 
+    - name: Limpiar Caché de Laravel
+      run: |
+        php artisan config:clear
+        php artisan route:clear
+        php artisan view:clear
+
     - name: Ejecutar migraciones y seeders
       run: php artisan migrate --seed
 
