@@ -27,3 +27,9 @@ jobs:
 
     - name: Instalar Dependencias de Composer
       run: composer install --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+    - name: Generar Clave de Aplicación
+      run: php artisan key:generate
+
+    - name: Configurar Directorios de Permisos
+      run: chmod -R 777 storage bootstrap/cache
