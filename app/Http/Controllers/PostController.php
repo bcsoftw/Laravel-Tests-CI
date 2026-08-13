@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Http\Requests\StorePostRequest;
 use Illuminate\Support\Facades\Storage;
 
@@ -23,7 +24,7 @@ class PostController extends Controller
         $filename = $request->file('photo')->store('posts');
 
         // TASK: Delete the old file from the storage
-        ???
+        Storage::delete($post->photo);
 
         $post->update([
             'title' => $request->title,
