@@ -11,11 +11,11 @@ use App\Models\Category;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTruncation;
 
 class GeneralTest extends TestCase
 {
-    use RefreshDatabase;
+    use DatabaseTruncation;
 
     public function test_home_screen_returns_home_view_and_shows_homepage(): void
     {
