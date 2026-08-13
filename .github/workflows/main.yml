@@ -37,9 +37,7 @@ jobs:
 
     - name: Limpiar Caché de Laravel
       run: |
-        php artisan config:clear
-        php artisan route:clear
-        php artisan view:clear
+        php artisan migrate:refresh
         php artisan optimize:clear
 
     - name: Ejecutar migraciones y seeders
