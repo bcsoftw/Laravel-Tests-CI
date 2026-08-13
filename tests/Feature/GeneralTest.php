@@ -10,7 +10,6 @@ use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class GeneralTest extends TestCase
@@ -147,8 +146,6 @@ class GeneralTest extends TestCase
     {
         // We just test if the test succeeds or throws an exception
         $this->expectNotToPerformAssertions();
-        // Run the migration for task6
-        // Artisan::call('migrate:fresh', ['--path' => '/database/migrations/task6']);
         // Create a category and a product associated with it
         $category = Category::create(['name' => fake()->text(30)]);
         Product::create(['name' => fake()->text(30), 'category_id' => $category->id]);
