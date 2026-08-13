@@ -145,25 +145,14 @@ class GeneralTest extends TestCase
 
     public function test_delete_parent_child_record()
     {
-        /*// We just test if the test succeeds or throws an exception
-        $this->expectNotToPerformAssertions();
-
-        Artisan::call('migrate:fresh', ['--path' => '/database/migrations/task6']);
-
-        $category = Category::create(['name' => fake()->text(30)]);
-        Product::create(['name' => fake()->text(30), 'category_id' => $category->id]);
-        $category->delete();*/
-
         // We just test if the test succeeds or throws an exception
         $this->expectNotToPerformAssertions();
         // Run the migration for task6
-        Artisan::call('migrate:fresh', ['--path' => '/database/migrations/task6']);
+        // Artisan::call('migrate:fresh', ['--path' => '/database/migrations/task6']);
         // Create a category and a product associated with it
         $category = Category::create(['name' => fake()->text(30)]);
         Product::create(['name' => fake()->text(30), 'category_id' => $category->id]);
         // Delete the category and check if the product is also deleted
-        $category->delete();   
-
-        
+        $category->delete();
     }
 }
