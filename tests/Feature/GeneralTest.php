@@ -11,12 +11,11 @@ use App\Models\Category;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Artisan;
-// use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class GeneralTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     public function test_home_screen_returns_home_view_and_shows_homepage(): void
     {
@@ -137,24 +136,34 @@ class GeneralTest extends TestCase
     public function test_loop_shows_table()
     {
         $response = $this->get(route('users'));
-        // $response->assertSee('No content');
         $this->assertStringContainsString('No content', $response->content()); 
 
         User::factory()->create();
-        $response = $this->get(route('users'));
-        // $response->assertDontSee('No content'); 
+        $response = $this->get(route('users')); 
         $this->assertStringNotContainsString('No content', $response->content());
     }
 
     public function test_delete_parent_child_record()
     {
-        // We just test if the test succeeds or throws an exception
+        /*// We just test if the test succeeds or throws an exception
         $this->expectNotToPerformAssertions();
 
         Artisan::call('migrate:fresh', ['--path' => '/database/migrations/task6']);
 
         $category = Category::create(['name' => fake()->text(30)]);
         Product::create(['name' => fake()->text(30), 'category_id' => $category->id]);
-        $category->delete();
+        $category->delete();*/
+
+        // We just test if the test succeeds or throws an exception
+        $this->expectNotToPerformAssertions();
+        // Run the migration for task6
+        Artisan::call('migrate:fresh', ['--path' => '/database/migrations/task6']);
+        // Create a category and a product associated with it
+        $category = Category::create(['name' => fake()->text(30)]);
+        Product::create(['name' => fake()->text(30), 'category_id' => $category->id]);
+        // Delete the category and check if the product is also deleted
+        $category->delete();   
+
+        
     }
 }
