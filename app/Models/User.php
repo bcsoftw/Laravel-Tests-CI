@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
@@ -43,5 +44,12 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function teams(): BelongsToMany
+    {
+        // Laravel asume automáticamente el nombre de la tabla 'team_user'
+        // Si tu tabla pivote tiene timestamps, añade ->withTimestamps()
+        return $this->belongsToMany(Team::class) ->withPivot('position')->withTimestamps();
     }
 }
