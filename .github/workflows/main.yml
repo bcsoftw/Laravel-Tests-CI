@@ -35,14 +35,6 @@ jobs:
     - name: Configurar Directorios de Permisos
       run: chmod -R 777 storage bootstrap/cache
 
-    - name: Limpiar Caché de Laravel
-      run: |
-        php artisan migrate:refresh
-        php artisan optimize:clear
-
-    - name: Ejecutar migraciones y seeders
-      run: php artisan migrate --seed
-
     - name: Set up Node.js
       uses: actions/setup-node@v4
       with:
@@ -62,7 +54,9 @@ jobs:
       env:
         DB_CONNECTION: sqlite
         DB_DATABASE: ":memory:"
-      run: php artisan test
+      run: |
+        php artisan migrate --seed
+        php artisan test
 
 
 
