@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use Illuminate\Foundation\Testing\DatabaseTruncation;
 use Tests\TestCase;
 use App\Models\Post;
 use App\Models\User;
@@ -11,7 +12,7 @@ use App\Models\Category;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Foundation\Testing\DatabaseTruncation;
+
 
 class GeneralTest extends TestCase
 {
