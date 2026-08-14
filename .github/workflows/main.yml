@@ -6,6 +6,11 @@ on:
     branches: [ 'main']
   pull_request:
     branches: [ 'main' ]
+    types: [opened, synchronize]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   laravel-tests:
@@ -34,15 +39,6 @@ jobs:
     - name: Configurar Directorios de Permisos
       run: chmod -R 777 storage bootstrap/cache
 
-    - name: Limpiar Caché de Laravel
-      run: |
-        php artisan config:clear
-        php artisan route:clear
-        php artisan view:clear
-
-    - name: Ejecutar migraciones y seeders
-      run: php artisan migrate --seed
-
     - name: Set up Node.js
       uses: actions/setup-node@v4
       with:
@@ -62,7 +58,9 @@ jobs:
       env:
         DB_CONNECTION: sqlite
         DB_DATABASE: ":memory:"
-      run: php artisan test
+      run: |
+        php artisan migrate --seed
+        php artisan test
 
 
 

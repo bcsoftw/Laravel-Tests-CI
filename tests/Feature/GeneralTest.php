@@ -10,7 +10,6 @@ use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class GeneralTest extends TestCase
@@ -20,7 +19,6 @@ class GeneralTest extends TestCase
     public function test_home_screen_returns_home_view_and_shows_homepage(): void
     {
         $response = $this->get('/');
-
         $response->assertOk()
             ->assertViewIs('home')
             ->assertSee('Homepage');
@@ -113,27 +111,34 @@ class GeneralTest extends TestCase
         $invalidPassword = '12345678';
         $validPassword = 'a12345678';
 
-        $this->post('/register', $user + [
+        $response = $this->post('/register', $user + [
                 'password'              => $invalidPassword,
                 'password_confirmation' => $invalidPassword,
-            ]);
+        ]);
+
+        // Verifica que fue rechazado (redirección por fallo de validación)
+        $response->assertSessionHasErrors(['password']); 
         $this->assertDatabaseMissing('users', $user);
 
-        $this->post('/register', $user + [
-                'password'              => $validPassword,
-                'password_confirmation' => $validPassword,
-            ]);
+        // 2. Intentar registrar con contraseña válida
+        $response = $this->post('/register', $user + [
+            'password'              => $validPassword,
+            'password_confirmation' => $validPassword,
+        ]);
 
+        // Verifica que el registro fue exitoso (redirige tras loguearse)
+        $response->assertRedirect('/dashboard'); 
         $this->assertDatabaseHas('users', $user);
+
     }
 
     public function test_loop_shows_table()
     {
         $response = $this->get(route('users'));
-        $this->assertStringContainsString('No content', $response->content());
+        $this->assertStringContainsString('No content', $response->content()); 
 
         User::factory()->create();
-        $response = $this->get(route('users'));
+        $response = $this->get(route('users')); 
         $this->assertStringNotContainsString('No content', $response->content());
     }
 
@@ -141,11 +146,10 @@ class GeneralTest extends TestCase
     {
         // We just test if the test succeeds or throws an exception
         $this->expectNotToPerformAssertions();
-
-        Artisan::call('migrate:fresh', ['--path' => '/database/migrations/task6']);
-
+        // Create a category and a product associated with it
         $category = Category::create(['name' => fake()->text(30)]);
         Product::create(['name' => fake()->text(30), 'category_id' => $category->id]);
+        // Delete the category and check if the product is also deleted
         $category->delete();
     }
 }
